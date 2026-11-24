@@ -155,9 +155,11 @@ void ServicesModel::runShell(const QString& op, const QString& command, bool ref
     AppContext::instance()->adb()->shell(this, serial, command, 30000,
                                          [this, serial, op, refreshAfter](const adb::ProcessResult& r) {
                                              const QString out = r.text().trimmed();
+                                             // am/pm report failure on stdout and may still exit 0.
+                                             const bool ok = r.ok() && !adb::shellOutputIndicatesFailure(out);
                                              emit operationFinished(
-                                                 op, r.ok(),
-                                                 labelForSerial(out.isEmpty() ? (r.ok() ? tr("Done") : r.errorText()) : out, serial, m_serial));
+                                                 op, ok,
+                                                 labelForSerial(out.isEmpty() ? (ok ? tr("Done") : r.errorText()) : out, serial, m_serial));
                                              if (refreshAfter && serial == m_serial) {
                                                  refresh();
                                              }
