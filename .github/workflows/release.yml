@@ -63,7 +63,11 @@ jobs:
           New-Item -ItemType Directory -Force stage | Out-Null
           Copy-Item build/PolyScope.exe stage/
           windeployqt --qmldir qml --release --dir stage stage/PolyScope.exe
-          Compress-Archive -Path stage/* -DestinationPath PolyScope-Windows.zip
+          # Inno Setup is preinstalled on windows-latest runners.
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          & $iscc "/DAppVersion=$version" "/DStageDir=$PWD\stage" packaging/windows/PolyScope.iss
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed" }
 
       - name: Package (Linux AppImage)
         if: runner.os == 'Linux'
