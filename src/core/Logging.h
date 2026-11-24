@@ -1,0 +1,8 @@
+#pragma once
+
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(lcAdb)
+Q_DECLARE_LOGGING_CATEGORY(lcScrcpy)
+Q_DECLARE_LOGGING_CATEGORY(lcDevices)
+Q_DECLARE_LOGGING_CATEGORY(lcTools)
