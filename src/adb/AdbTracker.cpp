@@ -38,6 +38,8 @@ void AdbTracker::stop() {
     m_retry.stop();
     m_socket.abort();
     setConnected(false);
+    // Whoever stops tracking (e.g. adb path removed) must not leave stale devices listed as online.
+    emit devicesUpdated(QString());
 }
 
 void AdbTracker::startServerThenConnect() {
