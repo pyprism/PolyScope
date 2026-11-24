@@ -14,6 +14,10 @@ ColumnLayout {
     Item { Layout.fillHeight: true }
     Text {
         Layout.alignment: Qt.AlignHCenter
+        Layout.fillWidth: true
+        Layout.maximumWidth: 420
+        horizontalAlignment: Text.AlignHCenter
+        wrapMode: Text.WordWrap
         text: root.title
         color: Theme.text
         font.pixelSize: 17
@@ -21,6 +25,8 @@ ColumnLayout {
     }
     Text {
         Layout.alignment: Qt.AlignHCenter
+        // fillWidth so the hint wraps to the pane instead of overflowing it off-centre.
+        Layout.fillWidth: true
         Layout.maximumWidth: 420
         text: root.hint
         color: Theme.textMuted
