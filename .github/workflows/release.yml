@@ -52,6 +52,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           macdeployqt build/PolyScope.app -qmldir=qml
+          # macdeployqt invalidates signatures; an unsigned arm64 bundle is reported as "damaged".
+          codesign --force --deep -s - build/PolyScope.app
           ditto -c -k --keepParent build/PolyScope.app PolyScope-macOS.zip
 
       - name: Package (Windows)
@@ -63,11 +65,25 @@ jobs:
           windeployqt --qmldir qml --release --dir stage stage/PolyScope.exe
           Compress-Archive -Path stage/* -DestinationPath PolyScope-Windows.zip
 
-      - name: Package (Linux)
+      - name: Package (Linux AppImage)
         if: runner.os == 'Linux'
+        env:
+          # Runners have no FUSE, so the AppImage tools must unpack themselves instead of mounting.
+          APPIMAGE_EXTRACT_AND_RUN: 1
+          QMAKE: ${{ env.QT_ROOT_DIR }}/bin/qmake
+          QML_SOURCES_PATHS: ${{ github.workspace }}/qml
+          LINUXDEPLOY_OUTPUT_VERSION: ${{ github.ref_name }}
+          OUTPUT: PolyScope-Linux-x86_64.AppImage
         run: |
-          cmake --install build --prefix stage/usr
-          tar -C stage -czf PolyScope-Linux.tar.gz usr
+          cmake --install build --prefix AppDir/usr
+          base=https://github.com/linuxdeploy
+          curl -fsSL -o linuxdeploy "$base/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+          curl -fsSL -o linuxdeploy-plugin-qt "$base/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
+          chmod +x linuxdeploy linuxdeploy-plugin-qt
+          # The plugin is found by name next to the linuxdeploy binary.
+          ./linuxdeploy --appdir AppDir --plugin qt --output appimage \
+            --desktop-file packaging/linux/polyscope.desktop \
+            --icon-file packaging/linux/icons/256x256/polyscope.png
 
       - uses: actions/upload-artifact@v7
         with:
