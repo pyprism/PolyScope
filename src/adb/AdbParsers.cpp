@@ -274,6 +274,12 @@ bool messageIndicatesFailure(const QString& text) {
            t.contains(QStringLiteral("unable")) || t.contains(QStringLiteral("error"));
 }
 
+bool shellOutputIndicatesFailure(const QString& text) {
+    static const QRegularExpression failure(
+        QStringLiteral("(?m)^(Failure|Error|Exception|Security exception)\\b"));
+    return failure.match(text).hasMatch();
+}
+
 bool hasExplicitSerial(const QStringList& args) {
     static const QStringList withValue = {QStringLiteral("-s"), QStringLiteral("-t"), QStringLiteral("-H"),
                                           QStringLiteral("-P"), QStringLiteral("-L")};

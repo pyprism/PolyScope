@@ -83,6 +83,10 @@ QString parseIpAddress(const QString& text);
 // `adb connect` / `adb pair` exit 0 even when they fail; decide from the message text.
 bool messageIndicatesFailure(const QString& text);
 
+// `am`/`pm`/`adb install` print "Failure [...]", "Error: ..." or an exception on stdout and may still
+// exit 0. Matches only at line start so ordinary output that merely mentions "error" is not misjudged.
+bool shellOutputIndicatesFailure(const QString& text);
+
 // True when argv (without the program name) selects a device itself: `-s SERIAL` before the subcommand.
 // A later "-s" (e.g. `logcat -s Tag`) belongs to the subcommand, not to adb.
 bool hasExplicitSerial(const QStringList& args);
