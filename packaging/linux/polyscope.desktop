@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=PolyScope
+GenericName=Android device manager
+Comment=Display and control Android devices with ADB and scrcpy
+Exec=PolyScope
+Icon=polyscope
+Terminal=false
+Categories=Development;Utility;
+Keywords=android;adb;scrcpy;mirror;
