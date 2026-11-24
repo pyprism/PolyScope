@@ -55,8 +55,8 @@ Item {
                 monitor.refreshStorage()
             }
         }
-        function onPackageDetailsReady(package, details) {
-            if (package === root.detailPackage)
+        function onPackageDetailsReady(packageName, details) {
+            if (packageName === root.detailPackage)
                 root.detailInfo = details
         }
     }
