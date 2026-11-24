@@ -81,6 +81,16 @@ private slots:
         QVERIFY(!messageIndicatesFailure(QStringLiteral("connected to 1.2.3.4:5555")));
         QVERIFY(!messageIndicatesFailure(QString()));
     }
+    void shellFailureOutput() {
+        QVERIFY(shellOutputIndicatesFailure(QStringLiteral("Failure [INSTALL_FAILED_ALREADY_EXISTS]")));
+        QVERIFY(shellOutputIndicatesFailure(QStringLiteral("Starting: Intent\nError: Activity class does not exist.")));
+        QVERIFY(shellOutputIndicatesFailure(QStringLiteral("Exception occurred while executing 'disable-user':")));
+        QVERIFY(shellOutputIndicatesFailure(QStringLiteral("Security exception: Permission Denial")));
+        QVERIFY(!shellOutputIndicatesFailure(QStringLiteral("Success")));
+        QVERIFY(!shellOutputIndicatesFailure(QStringLiteral("Service stopped")));
+        QVERIFY(!shellOutputIndicatesFailure(QStringLiteral("log line: an error happened mid-line")));
+        QVERIFY(!shellOutputIndicatesFailure(QString()));
+    }
     void explicitSerialOnlyBeforeSubcommand() {
         QVERIFY(hasExplicitSerial({QStringLiteral("-s"), QStringLiteral("X"), QStringLiteral("shell")}));
         QVERIFY(hasExplicitSerial({QStringLiteral("-H"), QStringLiteral("h"), QStringLiteral("-s"), QStringLiteral("X")}));
