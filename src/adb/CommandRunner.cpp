@@ -153,10 +153,11 @@ int CommandRunner::run(const QString& id, const QString& serial, const QVariantM
     }
     m_client->run(this, spec->needsDevice() ? serial : QString(), expanded.args, spec->timeoutMs,
                   [this, requestId, id, serial](const ProcessResult& r) {
-                      // connect/pair exit 0 on failure, so judge them by their message.
+                      // connect/pair exit 0 on failure, so judge them by their message; am/pm/install
+                      // may report failure on stdout while exiting 0.
                       const bool ok = (id == QStringLiteral("conn.connect") || id == QStringLiteral("conn.pair"))
                                           ? r.ok() && !adb::messageIndicatesFailure(r.text() + r.err)
-                                          : r.ok();
+                                          : r.ok() && !adb::shellOutputIndicatesFailure(r.text());
                       emit finished(requestId, id, serial, ok, outputOf(r), r.exitCode);
                   });
     return requestId;
