@@ -92,7 +92,7 @@ Release builds are **not code-signed**.
 - **macOS**: Gatekeeper blocks the first launch. Right-click → *Open*, or remove the quarantine flag:
   `xattr -dr com.apple.quarantine /Applications/PolyScope.app`
   If macOS says the app is *damaged*, the quarantine flag is the cause; `xattr -cr /Applications/PolyScope.app` fixes it.
-- **Windows**: SmartScreen shows "Windows protected your PC". Click *More info* → *Run anyway*.
+- **Windows**: ships as `PolyScope-Windows-Setup.exe`. SmartScreen shows "Windows protected your PC". Click *More info* → *Run anyway*.
 - **Linux**: ships as an AppImage; no signing involved. Mark it executable (`chmod +x PolyScope-Linux-x86_64.AppImage`) and run it.
 
 ## License
