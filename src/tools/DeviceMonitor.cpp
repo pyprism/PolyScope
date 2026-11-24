@@ -341,8 +341,7 @@ void DeviceMonitor::runDeviceAction(const QString& action, const QString& comman
     client->shell(this, serial, command, 30000, [this, serial, action](const adb::ProcessResult& r) {
         const QString out = r.text().trimmed();
         // `am`/`pm` report failures on stdout and may still exit 0.
-        static const QRegularExpression failure(QStringLiteral("(?m)^(Failure|Error|Exception|Security exception)\\b"));
-        const bool ok = r.ok() && !failure.match(out).hasMatch();
+        const bool ok = r.ok() && !adb::shellOutputIndicatesFailure(out);
         const QString message = out.isEmpty() ? (ok ? tr("Done") : r.errorText()) : out;
         emit actionFinished(action, ok, serial == m_serial ? message : message + tr(" (on %1)").arg(serial));
         if (serial == m_serial && !m_procInFlight &&
