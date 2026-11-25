@@ -1,4 +1,5 @@
-# PolyScope [![CI](https://github.com/pyprism/PolyScope/actions/workflows/ci.yml/badge.svg)](https://github.com/pyprism/PolyScope/actions/workflows/ci.yml)
+# PolyScope [![CI](https://github.com/pyprism/PolyScope/actions/workflows/ci.yml/badge.svg)](https://github.com/pyprism/PolyScope/actions/workflows/ci.yml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/pyprism/PolyScope/total)
+
 
 Open source desktop app (Qt 6 + QML) to **display and control Android devices** on Linux, macOS and
 Windows. It is a graphical wrapper around two tools you install yourself:
